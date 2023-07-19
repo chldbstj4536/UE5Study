@@ -2,8 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "../UE5StudyPrecompiled.h"
 #include "EnemyFactory.generated.h"
 
 UCLASS()

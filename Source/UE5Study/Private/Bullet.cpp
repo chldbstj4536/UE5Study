@@ -1,8 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Bullet.h"
 #include <Components/SphereComponent.h>
 #include <Components/StaticMeshComponent.h>
-#include "Bullet.h"
+#include "../UE5Study.h"
+#include "Enemy.h"
 
 // Sets default values
 ABullet::ABullet()
@@ -12,6 +14,17 @@ ABullet::ABullet()
 
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Collision"));
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
+
+	SetRootComponent(CollisionComponent);
+	StaticMeshComponent->SetupAttachment(CollisionComponent);
+
+	CollisionComponent->SetGenerateOverlapEvents(true);
+	CollisionComponent->SetCollisionProfileName(TEXT("Bullet"));
+	//CollisionComponent->SetCollisionObjectType(ECC_Bullet);
+	//CollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	//CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	//CollisionComponent->SetCollisionResponseToChannel(ECC_Enemy, ECollisionResponse::ECR_Overlap);
+	//CollisionComponent->SetCollisionResponseToChannel(ECC_KillZone, ECollisionResponse::ECR_Overlap);
 }
 
 // Called when the game starts or when spawned
@@ -19,6 +32,7 @@ void ABullet::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ABullet::OnBulletBeginOverlap);
 }
 
 // Called every frame
@@ -29,3 +43,12 @@ void ABullet::Tick(float DeltaTime)
 	SetActorLocation(GetActorLocation() + (MoveSpeed * DeltaTime) * GetActorForwardVector());
 }
 
+void ABullet::OnBulletBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	AEnemy* enemy = Cast<AEnemy>(OtherActor);
+
+	if (enemy != nullptr)
+		enemy->Destroy();
+
+    Destroy();
+}

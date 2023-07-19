@@ -5,6 +5,7 @@
 #include <Components/ArrowComponent.h>
 #include <Kismet/GameplayStatics.h>
 #include "Bullet.h"
+#include "../UE5Study.h"
 #include "PlayerPawn.h"
 
 // Sets default values
@@ -20,6 +21,13 @@ APlayerPawn::APlayerPawn()
 	SetRootComponent(CollisionComponent);
 	StaticMeshComponent->SetupAttachment(CollisionComponent);
 	ArrowComponent->SetupAttachment(CollisionComponent);
+
+	CollisionComponent->SetGenerateOverlapEvents(true);
+	CollisionComponent->SetCollisionProfileName(TEXT("Player"));
+	//CollisionComponent->SetCollisionObjectType(ECC_Player);
+	//CollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	//CollisionComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
+	//CollisionComponent->SetCollisionResponseToChannel(ECC_Enemy, ECR_Overlap);
 }
 
 // Called when the game starts or when spawned
@@ -64,6 +72,8 @@ void APlayerPawn::MoveVertical(float value)
 void APlayerPawn::Fire()
 {
 	FTransform FireTransform = ArrowComponent->GetComponentTransform();
+
+	UE_LOG(LogTemp, Warning, TEXT("Fire"));
 
 	GetWorld()->SpawnActor<ABullet>(Bullet, ArrowComponent->GetComponentLocation(), ArrowComponent->GetComponentRotation());
 	UGameplayStatics::PlaySound2D(GetWorld(), FireFXSound);

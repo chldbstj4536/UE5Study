@@ -7,6 +7,10 @@ public class UE5Study : ModuleRules
 	public UE5Study(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+
+		PrivatePCHHeaderFile = "UE5StudyPrecompiled.h";
+        MinFilesUsingPrecompiledHeaderOverride = 1;
+		bUseUnity = false;
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 
