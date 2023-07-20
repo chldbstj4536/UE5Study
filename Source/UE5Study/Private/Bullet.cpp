@@ -4,6 +4,7 @@
 #include <Components/SphereComponent.h>
 #include <Components/StaticMeshComponent.h>
 #include "../UE5Study.h"
+#include "ShootingGameModeBase.h"
 #include "Enemy.h"
 
 // Sets default values
@@ -48,7 +49,14 @@ void ABullet::OnBulletBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 	AEnemy* enemy = Cast<AEnemy>(OtherActor);
 
 	if (enemy != nullptr)
+	{
 		enemy->Destroy();
+		AShootingGameModeBase* GameMode = Cast<AShootingGameModeBase>(GetWorld()->GetAuthGameMode());
+		if (GameMode != nullptr)
+		{
+			GameMode->AddScore(1);
+		}
+	}
 
     Destroy();
 }

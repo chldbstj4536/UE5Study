@@ -12,7 +12,7 @@ public class UE5Study : ModuleRules
         MinFilesUsingPrecompiledHeaderOverride = 1;
 		bUseUnity = false;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

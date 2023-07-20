@@ -7,6 +7,7 @@
 #include "EngineUtils.h"
 #include "PlayerPawn.h"
 #include "../UE5Study.h"
+#include "ShootingGameModeBase.h"
 #include "PlayerPawn.h"
 
 // Sets default values
@@ -71,7 +72,10 @@ void AEnemy::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 	APlayerPawn* player = Cast<APlayerPawn>(OtherActor);
 	
 	if (player != nullptr)
+	{
 		player->Destroy();
+		Cast<AShootingGameModeBase>(GetWorld()->GetAuthGameMode())->GameOver();
+	}
 
 	Destroy();
 }
